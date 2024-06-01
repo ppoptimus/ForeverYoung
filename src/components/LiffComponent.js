@@ -27,30 +27,19 @@ const LiffComponent = () => {
 
     const sendNotification = async (userId) => {
       try {
-        const response = await fetch("https://8f31-2001-44c8-4280-dbc4-70cb-d753-a4d6-cf78.ngrok-free.app/webhook", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            events: [
-              {
-                type: "message",
-                replyToken: "dummy",
-                source: {
-                  userId: userId,
-                  type: "user",
-                },
-                timestamp: new Date().getTime(),
-                message: {
-                  id: "dummy",
-                  type: "text",
-                  text: "Hello, world",
-                },
-              },
-            ],
-          }),
-        });
+        const response = await fetch(
+          "https://8f31-2001-44c8-4280-dbc4-70cb-d753-a4d6-cf78.ngrok-free.app/webhook",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              userId: userId,
+              message: "You have successfully logged in!",
+            }),
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Failed to send notification");
