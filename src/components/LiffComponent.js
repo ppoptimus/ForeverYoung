@@ -28,7 +28,7 @@ const LiffComponent = () => {
     const sendNotification = async (userId) => {
       try {
         const response = await fetch(
-          "https://lineapi-bupn3221r-rathapongtcmgmailcoms-projects.vercel.app/webhook",
+          "https://lineapi.vercel.app/webhook",
           {
             method: "POST",
             headers: {
