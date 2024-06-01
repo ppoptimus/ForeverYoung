@@ -8,9 +8,7 @@ const LiffComponent = () => {
     const initializeLiff = async () => {
       try {
         await liff.init({ liffId: "2005387393-XvmK0M34" });
-        if (!liff.isLoggedIn()) {
-          liff.login();
-        } else {
+        if (liff.isLoggedIn()) {
           const userProfile = await liff.getProfile();
           setProfile(userProfile);
           console.log("User Profile:", userProfile);
@@ -19,6 +17,8 @@ const LiffComponent = () => {
           console.log("Access Token:", accessToken);
 
           sendNotification(userProfile.userId);
+        } else {
+          liff.login();
         }
       } catch (error) {
         console.error("LIFF Initialization failed", error);
@@ -28,7 +28,7 @@ const LiffComponent = () => {
     const sendNotification = async (userId) => {
       try {
         const response = await fetch(
-          "https://8f31-2001-44c8-4280-dbc4-70cb-d753-a4d6-cf78.ngrok-free.app/webhook",
+          "https://lineapi-bupn3221r-rathapongtcmgmailcoms-projects.vercel.app/webhook",
           {
             method: "POST",
             headers: {
