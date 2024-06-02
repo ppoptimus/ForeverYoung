@@ -3,6 +3,7 @@ import liff from "@line/liff";
 
 const LiffComponent = () => {
   const [profile, setProfile] = useState(null);
+  const params = new URLSearchParams(window.location.search);
 
   useEffect(() => {
     const initializeLiff = async () => {
@@ -12,9 +13,7 @@ const LiffComponent = () => {
           const userProfile = await liff.getProfile();
           setProfile(userProfile);
           console.log("User Profile:", userProfile);
-
-          const accessToken = liff.getAccessToken();
-          console.log("Access Token:", accessToken);
+          console.log("Param :", params.get("topic")); 
 
           sendNotification(userProfile.userId);
         } else {
