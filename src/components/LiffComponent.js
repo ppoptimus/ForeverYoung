@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import liff from "@line/liff";
 
 const LiffComponent = () => {
   const [profile, setProfile] = useState(null);
-  const params = new URLSearchParams(window.location.search);
+  const [queryParameters] = useSearchParams()
 
   useEffect(() => {
     const initializeLiff = async () => {
@@ -13,7 +14,6 @@ const LiffComponent = () => {
           const userProfile = await liff.getProfile();
           setProfile(userProfile);
           console.log("User Profile:", userProfile);
-          console.log("Param :", params.get("topic")); 
 
           sendNotification(userProfile.userId);
         } else {
@@ -26,19 +26,16 @@ const LiffComponent = () => {
 
     const sendNotification = async (userId) => {
       try {
-        const response = await fetch(
-          "https://lineapi.vercel.app/send",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              userId: userId,
-              message: "You have successfully logged in!",
-            }),
-          }
-        );
+        const response = await fetch("https://lineapi.vercel.app/send", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: userId,
+            message: "You have successfully logged in!",
+          }),
+        });
 
         if (!response.ok) {
           throw new Error("Failed to send notification");
@@ -59,6 +56,7 @@ const LiffComponent = () => {
           <p>Name: {profile.displayName}</p>
           <p>User ID: {profile.userId}</p>
           <p>Status Message: {profile.statusMessage}</p>
+          <p>Param: {queryParameters.get("param")}</p>
           <img src={profile.pictureUrl} alt="Profile" width={250} />
         </div>
       ) : (
