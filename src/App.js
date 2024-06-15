@@ -35,8 +35,10 @@ function App() {
       const hasPoint = params.has("point");
 
       if (hasTime && hasPoint) {
+        const time = params.get('time');
+        const point = params.get('point');
         // Redirect ไปที่ /profile
-        navigate("/profile");
+        navigate(`/profile?time=${time}&point=${point}`);
       }
     }
   }, [navigate]);

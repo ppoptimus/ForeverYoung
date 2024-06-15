@@ -2,25 +2,38 @@ import React, { useEffect, useState } from "react";
 import { AES } from 'crypto-js';
 import liff from "@line/liff";
 
-const LiffComponent = () => {
+const Profile = () => {
   const [profile, setProfile] = useState(null);
-  const [points, setpoints] = useState(0);
+  const [points, setPoints] = useState(0);
   const [token, setToken] = useState(null);
-  const queryParameters = new URLSearchParams(window.location.search);
-  const time = queryParameters.get("time");
-  const point = queryParameters.get("point");
-  const sensitiveData = time;
-  const secretKey = 'forever_young';
-
+  
   useEffect(() => {
+    const queryParameters = new URLSearchParams(window.location.search);
+    const time = queryParameters.get("time");
+    const point = queryParameters.get("point");
+    
+    if (time && point) {
+      // Store parameters in sessionStorage
+      sessionStorage.setItem("time", time);
+      sessionStorage.setItem("point", point);
+    }
+    
     const initializeLiff = async () => {
       try {
         await liff.init({ liffId: "2005387393-XvmK0M34" });
         if (liff.isLoggedIn()) {
           const userProfile = await liff.getProfile();
           setProfile(userProfile);
-          setpoints(point);
-          setToken(AES.encrypt(sensitiveData, secretKey).toString())
+          
+          // Get parameters from sessionStorage
+          const storedTime = sessionStorage.getItem("time");
+          const storedPoint = sessionStorage.getItem("point");
+          console.log(storedTime);
+          
+          if (storedTime && storedPoint) {
+            setPoints(storedPoint);
+            setToken(AES.encrypt(storedTime, 'forever_young').toString());
+          }
         } else {
           liff.login();
         }
@@ -29,32 +42,32 @@ const LiffComponent = () => {
       }
     };
 
-    const sendNotification = async (userId) => {
-      try {
-        const response = await fetch(
-          "https://lineapi.vercel.app/send",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              userId: userId,
-              message: "You have successfully logged in!",
-            }),
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error("Failed to send notification");
-        }
-      } catch (error) {
-        console.error("Error sending notification", error);
-      }
-    };
-
     initializeLiff();
   }, []);
+
+  const sendNotification = async (userId) => {
+    try {
+      const response = await fetch(
+        "https://lineapi.vercel.app/send",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: userId,
+            message: "You have successfully logged in!",
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to send notification");
+      }
+    } catch (error) {
+      console.error("Error sending notification", error);
+    }
+  };
 
   return (
     <div>
@@ -75,4 +88,4 @@ const LiffComponent = () => {
   );
 };
 
-export default LiffComponent;
+export default Profile;
