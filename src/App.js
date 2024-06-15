@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route, Navigate, Link } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  Link,
+  useNavigate,
+} from "react-router-dom";
 import "./App.css";
 
 const LiffComponent = React.lazy(() => import("./components/LiffComponent"));
@@ -8,37 +15,43 @@ const SlotGame = React.lazy(() => import("./games/SlotGame"));
 const SlotGame2 = React.lazy(() => import("./games/SlotGame2"));
 
 function App() {
-  const [fromQr, setFromQr] = useState(true);
-  const url = new URL(window.location.href);
-  const liffState = url.searchParams.get('liff.state');
-  const decodedLiffState = decodeURIComponent(liffState);
-  const params = new URLSearchParams(decodedLiffState.split('?')[1]);
-  const time = params.get('time');
-  const point = params.get('point');
-  const isAdmin = url.searchParams.has("adminforfilm");
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if(time&point){
-      setFromQr(true);
+    const url = new URL(window.location.href);
+
+    // ดึงค่า liff.state
+    const liffState = url.searchParams.get("liff.state");
+
+    if (liffState) {
+      // ถอดรหัส liff.state
+      const decodedLiffState = decodeURIComponent(liffState);
+
+      // สร้าง URLSearchParams จาก liff.state ที่ถอดรหัสแล้ว
+      const params = new URLSearchParams(decodedLiffState.split("?")[1]);
+
+      // เช็คว่ามีพารามิเตอร์ชื่อ time และ point หรือไม่
+      const hasTime = params.has("time");
+      const hasPoint = params.has("point");
+
+      if (hasTime && hasPoint) {
+        // Redirect ไปที่ /profile
+        navigate("/profile");
+      }
     }
-  }, [])
-  
-  if(fromQr){
-    <Navigate to="/profile" replace={true} />
-  }
+  }, [navigate]);
+
   return (
     <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />}></Route>
-          <Route path="/adminforfilm" element={<QrComponent />}></Route>
-          <Route path="/profile" element={<LiffComponent />}></Route>
-          <Route path="/slot" element={<SlotGame />}></Route>
-          <Route path="/slot2" element={<SlotGame2 />}></Route>
-          <Route path="/*" element={<NoMatch />}></Route>
-          <Route path="/Home" element={<Navigate to={"/"} />}></Route>
-        </Routes>
-      </BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />}></Route>
+        <Route path="/adminforfilm" element={<QrComponent />}></Route>
+        <Route path="/profile" element={<LiffComponent />}></Route>
+        <Route path="/slot" element={<SlotGame />}></Route>
+        <Route path="/slot2" element={<SlotGame2 />}></Route>
+        <Route path="/*" element={<NoMatch />}></Route>
+        <Route path="/Home" element={<Navigate to={"/"} />}></Route>
+      </Routes>
     </div>
   );
 }
@@ -58,7 +71,6 @@ function Home() {
   return (
     <div>
       <h1>This is Home</h1>
-      
     </div>
   );
 }
