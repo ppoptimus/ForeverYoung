@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from "react";
+import { AES } from 'crypto-js';
 import liff from "@line/liff";
 
 const LiffComponent = () => {
   const [profile, setProfile] = useState(null);
-  const queryParameters = new URLSearchParams(window.location.search)
-  const param = queryParameters.get("param")
+  const [points, setpoints] = useState(0);
+  const [token, setToken] = useState(null);
+  const queryParameters = new URLSearchParams(window.location.search);
+  const time = queryParameters.get("time");
+  const point = queryParameters.get("point");
+  const sensitiveData = time;
+  const secretKey = 'forever_young';
 
   useEffect(() => {
     const initializeLiff = async () => {
@@ -13,9 +19,8 @@ const LiffComponent = () => {
         if (liff.isLoggedIn()) {
           const userProfile = await liff.getProfile();
           setProfile(userProfile);
-          console.log("User Profile:", userProfile);
-
-          // sendNotification(userProfile.userId);
+          setpoints(point);
+          setToken(AES.encrypt(sensitiveData, secretKey).toString())
         } else {
           liff.login();
         }
@@ -59,7 +64,8 @@ const LiffComponent = () => {
           <p>Name: {profile.displayName}</p>
           <p>User ID: {profile.userId}</p>
           <p>Status Message: {profile.statusMessage}</p>
-          <p>Param: {param}</p>
+          <p>Points: {points}</p>
+          <p>Token: {token}</p>
           <img src={profile.pictureUrl} alt="Profile" width={250} />
         </div>
       ) : (

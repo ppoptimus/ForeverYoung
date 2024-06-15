@@ -8,11 +8,11 @@ const SlotGame = React.lazy(() => import("./games/SlotGame"));
 const SlotGame2 = React.lazy(() => import("./games/SlotGame2"));
 
 function App() {
+  const [fromQr, setFromQr] = useState(true);
   const url = new URL(window.location.href);
   const time = url.searchParams.has("time");
   const point = url.searchParams.has("point");
   const isAdmin = url.searchParams.has("adminforfilm");
-  const [fromQr, setFromQr] = useState(true);
 
   useEffect(() => {
     if(time&point){
