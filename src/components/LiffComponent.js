@@ -10,9 +10,6 @@ const Profile = () => {
   const [token, setToken] = useState(null);
 
   useEffect(() => {
-    if (sessionStorage.getItem("point")) {
-      sessionStorage.clear();
-    }
     const url = new URL(window.location.href);
     const liffState = url.searchParams.get("liff.state");
 
@@ -23,8 +20,8 @@ const Profile = () => {
           const userProfile = await liff.getProfile();
           setProfile(userProfile);
 
-          const storedTime = sessionStorage.getItem("time");
-          const storedPoint = sessionStorage.getItem("point");
+          const storedTime = localStorage.getItem("time");
+          const storedPoint = localStorage.getItem("point");
 
           if (storedTime && storedPoint) {
             setPoints(storedPoint);
@@ -38,37 +35,6 @@ const Profile = () => {
         navigate(`/home`);
       }
     };
-
-    if (liffState) {
-      const decodedLiffState = decodeURIComponent(liffState);
-      const params = new URLSearchParams(decodedLiffState.split("?")[1]);
-
-      const hasTime = params.has("time");
-      const hasPoint = params.has("point");
-      const time = params.get("time");
-      const point = params.get("point");
-
-      console.log("url = " + url);
-      console.log("time = " + time);
-
-      if (hasTime && hasPoint) {
-        sessionStorage.setItem("time", time);
-        sessionStorage.setItem("point", point);
-      }
-    } else {
-      const queryParameters = new URLSearchParams(window.location.search);
-      const hasTime = queryParameters.has("time");
-      const hasPoint = queryParameters.has("point");
-      if (hasTime && hasPoint) {
-        const time = queryParameters.get("time");
-        const point = queryParameters.get("point");
-        console.log("queryParameters = " + queryParameters);
-        console.log("time = " + time);
-
-        sessionStorage.setItem("time", time);
-        sessionStorage.setItem("point", point);
-      }
-    }
     initializeLiff();
   }, []);
 
