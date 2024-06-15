@@ -16,6 +16,8 @@ const SlotGame2 = React.lazy(() => import("./games/SlotGame2"));
 
 function App() {
   const navigate = useNavigate();
+  const [point, setPoint] = useState(0);
+  const [time, setTime] = useState(null);
 
   useEffect(() => {
     const url = new URL(window.location.href);
@@ -29,9 +31,18 @@ function App() {
       const hasPoint = params.has("point");
 
       if (hasTime && hasPoint) {
-        const time = params.get('time');
-        const point = params.get('point');
-
+        setPoint(params.get('point'));
+        setTime(params.get('time'));
+        navigate(`/profile?time=${time}&point=${point}`);
+      }
+    }
+    else{
+      const queryParameters = new URLSearchParams(window.location.search);
+      const time = queryParameters.get("time");
+      const point = queryParameters.get("point");
+      if (time && point){
+        setPoint(point);
+        setTime(time);
         navigate(`/profile?time=${time}&point=${point}`);
       }
     }
