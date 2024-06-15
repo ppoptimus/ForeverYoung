@@ -19,25 +19,19 @@ function App() {
 
   useEffect(() => {
     const url = new URL(window.location.href);
-
-    // ดึงค่า liff.state
     const liffState = url.searchParams.get("liff.state");
 
     if (liffState) {
-      // ถอดรหัส liff.state
       const decodedLiffState = decodeURIComponent(liffState);
-
-      // สร้าง URLSearchParams จาก liff.state ที่ถอดรหัสแล้ว
       const params = new URLSearchParams(decodedLiffState.split("?")[1]);
 
-      // เช็คว่ามีพารามิเตอร์ชื่อ time และ point หรือไม่
       const hasTime = params.has("time");
       const hasPoint = params.has("point");
 
       if (hasTime && hasPoint) {
         const time = params.get('time');
         const point = params.get('point');
-        // Redirect ไปที่ /profile
+
         navigate(`/profile?time=${time}&point=${point}`);
       }
     }

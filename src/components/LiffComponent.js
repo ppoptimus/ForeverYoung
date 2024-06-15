@@ -8,41 +8,41 @@ const Profile = () => {
   const [token, setToken] = useState(null);
   
   useEffect(() => {
+    sessionStorage.clear();
+    const url = new URL(window.location.href);
+    console.log("url : " + url);
     const queryParameters = new URLSearchParams(window.location.search);
     const time = queryParameters.get("time");
     const point = queryParameters.get("point");
     
     if (time && point) {
-      // Store parameters in sessionStorage
       sessionStorage.setItem("time", time);
       sessionStorage.setItem("point", point);
+
+      const initializeLiff = async () => {
+        try {
+          await liff.init({ liffId: "2005387393-XvmK0M34" });
+          if (liff.isLoggedIn()) {
+            const userProfile = await liff.getProfile();
+            setProfile(userProfile);
+  
+            const storedTime = sessionStorage.getItem("time");
+            const storedPoint = sessionStorage.getItem("point");
+            
+            if (storedTime && storedPoint) {
+              setPoints(storedPoint);
+              setToken(AES.encrypt(storedTime, 'forever_young').toString());
+            }
+          } else {
+            liff.login();
+          }
+        } catch (error) {
+          console.error("LIFF Initialization failed", error);
+        }
+      };
+      // initializeLiff();
     }
     
-    const initializeLiff = async () => {
-      try {
-        await liff.init({ liffId: "2005387393-XvmK0M34" });
-        if (liff.isLoggedIn()) {
-          const userProfile = await liff.getProfile();
-          setProfile(userProfile);
-          
-          // Get parameters from sessionStorage
-          const storedTime = sessionStorage.getItem("time");
-          const storedPoint = sessionStorage.getItem("point");
-          console.log(storedTime);
-          
-          if (storedTime && storedPoint) {
-            setPoints(storedPoint);
-            setToken(AES.encrypt(storedTime, 'forever_young').toString());
-          }
-        } else {
-          liff.login();
-        }
-      } catch (error) {
-        console.error("LIFF Initialization failed", error);
-      }
-    };
-
-    initializeLiff();
   }, []);
 
   const sendNotification = async (userId) => {
