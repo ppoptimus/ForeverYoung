@@ -10,8 +10,11 @@ const SlotGame2 = React.lazy(() => import("./games/SlotGame2"));
 function App() {
   const [fromQr, setFromQr] = useState(true);
   const url = new URL(window.location.href);
-  const time = url.searchParams.has("time");
-  const point = url.searchParams.has("point");
+  const liffState = url.searchParams.get('liff.state');
+  const decodedLiffState = decodeURIComponent(liffState);
+  const params = new URLSearchParams(decodedLiffState.split('?')[1]);
+  const time = params.get('time');
+  const point = params.get('point');
   const isAdmin = url.searchParams.has("adminforfilm");
 
   useEffect(() => {
