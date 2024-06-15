@@ -1,15 +1,62 @@
-import React from 'react';
-import './App.css';
-import LiffComponent from './components/LiffComponent';
+import React, { useEffect, useState } from "react";
+import { BrowserRouter, Routes, Route, Navigate, Link } from "react-router-dom";
+import "./App.css";
+
+const LiffComponent = React.lazy(() => import("./components/LiffComponent"));
+const QrComponent = React.lazy(() => import("./components/QrComponent"));
+const SlotGame = React.lazy(() => import("./games/SlotGame"));
+const SlotGame2 = React.lazy(() => import("./games/SlotGame2"));
 
 function App() {
+  const url = new URL(window.location.href);
+  const time = url.searchParams.has("time");
+  const point = url.searchParams.has("point");
+  const isAdmin = url.searchParams.has("adminforfilm");
+  const [fromQr, setFromQr] = useState(true);
+
+  useEffect(() => {
+    if(time&point){
+      setFromQr(true);
+    }
+  }, [])
+  
+  if(fromQr){
+    <Navigate to="/profile" replace={true} />
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <LiffComponent />
-      </header>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />}></Route>
+          <Route path="/adminforfilm" element={<QrComponent />}></Route>
+          <Route path="/profile" element={<LiffComponent />}></Route>
+          <Route path="/slot" element={<SlotGame />}></Route>
+          <Route path="/slot2" element={<SlotGame2 />}></Route>
+          <Route path="/*" element={<NoMatch />}></Route>
+          <Route path="/Home" element={<Navigate to={"/"} />}></Route>
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
 
+function NoMatch() {
+  return (
+    <div>
+      <h2>Nothing to see here!</h2>
+      <p>
+        <Link to="/">Go to the home page</Link>
+      </p>
+    </div>
+  );
+}
+
+function Home() {
+  return (
+    <div>
+      <h1>This is Home</h1>
+      
+    </div>
+  );
+}
 export default App;

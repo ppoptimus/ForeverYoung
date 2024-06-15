@@ -15,7 +15,7 @@ const LiffComponent = () => {
           setProfile(userProfile);
           console.log("User Profile:", userProfile);
 
-          sendNotification(userProfile.userId);
+          // sendNotification(userProfile.userId);
         } else {
           liff.login();
         }

@@ -1,0 +1,47 @@
+.App {
+    text-align: center;
+  }
+  
+  .slot-machine {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .slot-bg {
+    background-image: url('../../public/img/612x6122.jpg');
+  }
+  
+  .slots {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 100px;
+    overflow: hidden; /* To hide the overflow of the spinning animation */
+  }
+  
+  .slot {
+    font-size: 1em;
+    animation: infinite; /* Default to no animation */
+    position: relative;
+  }
+  
+  .spinning .slot {
+    animation: spin 0.5s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(0); }
+  }
+  
+  button {
+    padding: 10px 20px;
+    font-size: 1em;
+  }
+  
+  .result {
+    margin-top: 20px;
+    font-size: 1.5em;
+  }
+  
+  
