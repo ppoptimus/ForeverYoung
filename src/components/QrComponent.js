@@ -9,7 +9,7 @@ const QrComponent = () => {
     getToekn();
   }, [])
   
-  const urlBase = "https://foreveryoung-seven.vercel.app";
+  const urlBase = "https://liff.line.me/2005387393-XvmK0M34";
   let desUrl = `${urlBase}?time=${time}&point=${point}`;
 
   const getToekn = () => {
