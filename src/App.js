@@ -7,6 +7,7 @@ import {
   useNavigate,
 } from "react-router-dom";
 import "./App.css";
+import liff from "@line/liff";
 
 const LiffComponent = React.lazy(() => import("./components/LiffComponent"));
 const QrComponent = React.lazy(() => import("./components/QrComponent"));
@@ -15,6 +16,7 @@ const SlotGame2 = React.lazy(() => import("./games/SlotGame2"));
 
 function App() {
   const navigate = useNavigate();
+  const [profile, setProfile] = useState(null);
 
   useEffect(() => {
     const url = new URL(window.location.href);
@@ -31,6 +33,11 @@ function App() {
         localStorage.setItem('time', params.get('time'));
         localStorage.setItem('point', params.get('point'));
         // navigate(`/profile`);
+        liff.init({ liffId: "2005387393-XvmK0M34" }).then(() => {
+          const userProfile = liff.getProfile();
+          setProfile(userProfile);
+          localStorage.setItem('profile', profile);
+        });
       }
     }
     else{
