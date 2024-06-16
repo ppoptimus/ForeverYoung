@@ -23,7 +23,7 @@ function App() {
     if (liffState) {
       const decodedLiffState = decodeURIComponent(liffState);
       const params = new URLSearchParams(decodedLiffState.split("?")[1]);
-
+      console.log("params = " + params);
       const hasTime = params.has("time");
       const hasPoint = params.has("point");
 
@@ -35,6 +35,7 @@ function App() {
     }
     else{
       const queryParameters = new URLSearchParams(window.location.search);
+      console.log("queryParameters = " + queryParameters);
       const time = queryParameters.get("time");
       const point = queryParameters.get("point");
       if (time && point){
