@@ -6,8 +6,6 @@ import liff from "@line/liff";
 const Profile = () => {
   const navigate = useNavigate();
   const [profile, setProfile] = useState(null);
-  const [points, setPoints] = useState(0);
-  const [token, setToken] = useState(null);
 
   useEffect(() => {
     const url = new URL(window.location.href);

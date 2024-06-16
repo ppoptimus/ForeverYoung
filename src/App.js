@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Routes,
-  Route,
-  Navigate,
-  Link,
-  useNavigate,
-} from "react-router-dom";
+import { Routes, Route, Navigate, Link, useNavigate } from "react-router-dom";
 import "./App.css";
 import liff from "@line/liff";
 
@@ -30,28 +24,58 @@ function App() {
       const hasPoint = params.has("point");
 
       if (hasTime && hasPoint) {
-        localStorage.setItem('time', params.get('time'));
-        localStorage.setItem('point', params.get('point'));
-        // navigate(`/profile`);
+        localStorage.setItem("time", params.get("time"));
+        localStorage.setItem("point", params.get("point"));
+
         liff.init({ liffId: "2005387393-XvmK0M34" }).then(() => {
           const userProfile = liff.getProfile();
           setProfile(userProfile);
-          localStorage.setItem('profile', profile);
+          localStorage.setItem("profile", profile);
         });
       }
-    }
-    else{
+    } else {
       const queryParameters = new URLSearchParams(window.location.search);
       console.log("queryParameters = " + queryParameters);
       const time = queryParameters.get("time");
       const point = queryParameters.get("point");
-      if (time && point){
-        localStorage.setItem('time', time);
-        localStorage.setItem('point', point);
+      if (time && point) {
+        localStorage.setItem("time", time);
+        localStorage.setItem("point", point);
         navigate(`/profile`);
       }
     }
   }, []);
+
+  const getProfile = () => {
+    const [profile, setProfile] = useState(null);
+
+    try {
+      liff.init({ liffId: "2005387393-XvmK0M34" }).then(() => {
+        const userProfile = liff.getProfile();
+        setProfile(userProfile);
+        console.log("isLogin");
+
+        return (
+          <div>
+            <h1>isLogin</h1>
+            {profile ? (
+              <div>
+                <p>Name: {profile.displayName}</p>
+                <p>User ID: {profile.userId}</p>
+                <p>Status Message: {profile.statusMessage}</p>
+                <img src={profile.pictureUrl} alt="Profile" width={250} />
+              </div>
+            ) : (
+              <p>Loading...</p>
+            )}
+          </div>
+        );
+      });
+    } catch (error) {
+      console.error("LIFF Initialization failed", error);
+      navigate(`/home`);
+    }
+  };
 
   return (
     <div className="App">
