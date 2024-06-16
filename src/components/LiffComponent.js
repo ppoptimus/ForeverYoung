@@ -15,7 +15,9 @@ const Profile = () => {
 
     const initializeLiff = async () => {
       try {
-        await liff.init({ liffId: "2005387393-XvmK0M34" });
+        liff.init({ liffId: "2005387393-XvmK0M34" }).then(() => {
+          window.location.href = "https://liff.line.me/2005387393-XvmK0M34/?time=134&point=5";
+        });
         if (liff.isLoggedIn()) {
           const userProfile = await liff.getProfile();
           setProfile(userProfile);
