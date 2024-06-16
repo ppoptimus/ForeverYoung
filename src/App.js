@@ -30,7 +30,7 @@ function App() {
       if (hasTime && hasPoint) {
         localStorage.setItem('time', params.get('time'));
         localStorage.setItem('point', params.get('point'));
-        navigate(`/profile`);
+        // navigate(`/profile`);
       }
     }
     else{
