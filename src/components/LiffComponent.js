@@ -15,23 +15,15 @@ const Profile = () => {
 
     const initializeLiff = async () => {
       try {
-        liff.init({ liffId: "2005387393-XvmK0M34" }).then(() => {
-          window.location.href = "https://liff.line.me/2005387393-XvmK0M34/?time=134&point=5";
-        });
-        if (liff.isLoggedIn()) {
-          const userProfile = await liff.getProfile();
-          setProfile(userProfile);
-
-          const storedTime = localStorage.getItem("time");
-          const storedPoint = localStorage.getItem("point");
-
-          if (storedTime && storedPoint) {
-            setPoints(storedPoint);
-            setToken(AES.encrypt(storedTime, "forever_young").toString());
+        liff.init({ liffId: "2005387393-XvmK0M34" }).then(() => {    
+          if (liff.isLoggedIn()) {
+            const userProfile = liff.getProfile();
+            setProfile(userProfile);
+            console.log("isLogin");
+          } else {
+            liff.login();
           }
-        } else {
-          liff.login();
-        }
+        });
       } catch (error) {
         console.error("LIFF Initialization failed", error);
         navigate(`/home`);
