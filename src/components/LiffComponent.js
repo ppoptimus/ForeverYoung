@@ -4,27 +4,24 @@ import { AES } from "crypto-js";
 import liff from "@line/liff";
 
 const Profile = () => {
-  const navigate = useNavigate();
   const [profile, setProfile] = useState(null);
-
+  const navigate = useNavigate();
   useEffect(() => {
-    const url = new URL(window.location.href);
-    const liffState = url.searchParams.get("liff.state");
-
     const initializeLiff = async () => {
       try {
-        liff.init({ liffId: "2005387393-XvmK0M34" }).then(() => {    
+        liff.init({ liffId: "2005387393-XvmK0M34" }).then(() => {
           if (liff.isLoggedIn()) {
             const userProfile = liff.getProfile();
             setProfile(userProfile);
+            localStorage.setItem("userId", profile.userId);
             console.log("isLogin");
+            navigate(`/`);
           } else {
             liff.login();
           }
         });
       } catch (error) {
         console.error("LIFF Initialization failed", error);
-        navigate(`/home`);
       }
     };
     initializeLiff();
@@ -54,18 +51,8 @@ const Profile = () => {
   return (
     <div>
       <h1>LIFF App</h1>
-      {profile ? (
-        <div>
-          <p>Name: {profile.displayName}</p>
-          <p>User ID: {profile.userId}</p>
-          <p>Status Message: {profile.statusMessage}</p>
-          <p>Points: {points}</p>
-          <p>Token: {token}</p>
-          <img src={profile.pictureUrl} alt="Profile" width={250} />
-        </div>
-      ) : (
-        <p>Loading...</p>
-      )}
+
+      <p>Loading...</p>
     </div>
   );
 };

@@ -1,9 +1,8 @@
-import "./App.css";
-import liff from "@line/liff";
 import React, { useEffect, useState, useRef } from "react";
+import liff from "@line/liff";
 import { BrowserMultiFormatReader } from "@zxing/library";
 
-function App() {
+export default function OpenLiffScan() {
   const [profile, setProfile] = useState(null);
   const [scannedData, setScannedData] = useState("");
   useEffect(() => {
@@ -47,30 +46,15 @@ const QRScanner = ({ onScan }) => {
 
   useEffect(() => {
     const codeReader = new BrowserMultiFormatReader();
-    
-    const startScanner = async () => {
-      try {
-        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-          throw new Error('Camera access is not supported by this browser.');
+    codeReader.decodeFromVideoDevice(
+      undefined,
+      videoRef.current,
+      (result, err) => {
+        if (result) {
+          onScan(result.getText());
         }
-
-        await navigator.mediaDevices.getUserMedia({ video: true });
-
-        codeReader.decodeFromVideoDevice(undefined, videoRef.current, (result, err) => {
-          if (result) {
-            onScan(result.getText());
-          }
-          if (err && err.name !== 'NotFoundException') {
-            console.error('QR Code scan error:', err);
-          }
-        });
-      } catch (error) {
-        console.error('Error accessing camera:', error);
-        alert('Cannot access camera. Please check your permissions.');
       }
-    };
-
-    startScanner();
+    );
 
     return () => {
       codeReader.reset();
@@ -84,6 +68,3 @@ const QRScanner = ({ onScan }) => {
     </div>
   );
 };
-
-
-export default App;
