@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 
 function App() {
   const [profile, setProfile] = useState(null);
+  const [data, setData] = useState(null);
 
   useEffect(() => {
     liff
@@ -25,7 +26,7 @@ function App() {
     try {
       liff.scanCodeV2().then((result) => {
         console.log('Scan result:', result.value);
-        // เพิ่มโค้ดเพื่อใช้งานผลลัพธ์ที่ได้จากการสแกน QR code ตามต้องการ
+        setData(result.value);
       });
     } catch (error) {
       console.error('Error scanning QR code:', error);
@@ -41,6 +42,9 @@ function App() {
           <p>สวัสดีคุณ: {profile.displayName}</p>
           <p>วันนี้รับกี่แต้มดีนะ ลองสแกนดู</p>
         </div>
+      )}
+      {data && (
+        <p>{data}</p>
       )}
       <div>
         <button
