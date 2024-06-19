@@ -6,19 +6,19 @@ import QrScanner from 'react-qr-scanner';
 function App() {
   const [profile, setProfile] = useState(null);
   useEffect(() => {
-    // liff
-    //   .init({ liffId: "2005387393-XvmK0M34" })
-    //   .then(() => {
-    //     if (liff.isLoggedIn()) {
-    //       liff
-    //         .getProfile()
-    //         .then((profile) => setProfile(profile))
-    //         .catch((err) => console.error("Error getting profile:", err));
-    //     } else {
-    //       liff.login();
-    //     }
-    //   })
-    //   .catch((err) => console.error("LIFF Initialization failed:", err));
+    liff
+      .init({ liffId: "2005387393-XvmK0M34" })
+      .then(() => {
+        if (liff.isLoggedIn()) {
+          liff
+            .getProfile()
+            .then((profile) => setProfile(profile))
+            .catch((err) => console.error("Error getting profile:", err));
+        } else {
+          liff.login();
+        }
+      })
+      .catch((err) => console.error("LIFF Initialization failed:", err));
   }, []);
 
   return (
