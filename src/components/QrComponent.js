@@ -12,6 +12,8 @@ const QrComponent = () => {
   const urlBase = "https://liff.line.me/2005387393-XvmK0M34/";
   let desUrl = `${urlBase}?time=${time}&point=${point}`;
 
+  let dataScan = `${time}|${point}`;
+
   const getToekn = () => {
     const date = new Date();
     const year = date.getFullYear();
@@ -68,7 +70,7 @@ const QrComponent = () => {
         <QRCode
           size={500}
           style={{ height: "300", maxWidth: "100%", width: "100%" }}
-          value={desUrl}
+          value={dataScan}
           viewBox={`0 0 500 500`}
         />
       </div>
