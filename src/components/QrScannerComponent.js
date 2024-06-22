@@ -3,7 +3,8 @@ import React, { useEffect, useState } from "react";
 
 const QrScannerComponent = ({ usrId }) => {
   const [scanning, setScanning] = useState(false);
-  const [data, setData] = useState(null);
+  const [point, setPoint] = useState(null);
+  const [token, setToken] = useState(null);
   const [error, setError] = useState(null);
   const [labelScan, setLabelScan] = useState("เริ่มสแกน");
 
@@ -12,9 +13,15 @@ const QrScannerComponent = ({ usrId }) => {
       liff
         .scanCodeV2()
         .then((result) => {
-          let point = result != null ? result.value.split("|")[1] : null;
-          setData(`${point}`);
-          //   sendDataScan(usrId, result.value);
+          let getToken = result != null ? result.value.split("|")[0] : null;
+          let getPoint = result != null ? result.value.split("|")[1] : null;
+          if (getToken) {
+            setToken(getToken);
+          }
+          if (getPoint) {
+            setPoint(getPoint);
+          }
+          sendDataScan(usrId, point, token);
           setLabelScan("สแกนอีกครั้ง");
           setScanning(false);
         })
@@ -23,7 +30,7 @@ const QrScannerComponent = ({ usrId }) => {
           setScanning(false);
         });
     }
-  }, [scanning, usrId]);
+  }, [scanning, usrId, point, token]);
 
   const startScan = () => {
     setScanning(true);
@@ -42,22 +49,18 @@ const QrScannerComponent = ({ usrId }) => {
         {scanning && <span>กำลังสแกน...</span>}
       </p>
 
-      <p>{data && <span>ครั้งนี้คุณได้แต้ม: {data} แต้ม</span>}</p>
+      <p>{point && <span>ครั้งนี้คุณได้แต้ม: {point} แต้ม</span>}</p>
       <p>{error && <span>เกิดข้อผิดพลาดในการสแกน: {error.message}</span>}</p>
     </div>
   );
 };
 
-const sendDataScan = async (userId, message) => {
+const sendDataScan = async (userId, point, token) => {
   try {
     let bodyContent = JSON.stringify({
-      to: userId,
-      messages: [
-        {
-          type: "text",
-          text: message,
-        },
-      ],
+      "userId" : userId,
+      "point" : point,
+      "token" : token
     });
     const response = await fetch("https://lineapi.vercel.app/sendResultScan", {
       method: "POST",
