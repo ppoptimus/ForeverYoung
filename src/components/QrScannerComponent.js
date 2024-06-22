@@ -13,9 +13,10 @@ const QrScannerComponent = ({ usrId }) => {
       liff
         .scanCodeV2()
         .then((result) => {
-          let getToken = result != null ? result.value.split("|")[0] : null;
-          let getPoint = result != null ? result.value.split("|")[1] : null;
-          if(!getToken || !getPoint){
+          let codeArr = result.value.split("|");
+          let getToken = (codeArr[0] === "token") ? codeArr[1] : null;
+          let getPoint = (codeArr[2] === "point") ? codeArr[3] : null;
+          if(getToken == null || getPoint == null){
             setError("QR Code ไม่ถูกต้อง");
           }else{
             if (getToken) {
@@ -24,10 +25,10 @@ const QrScannerComponent = ({ usrId }) => {
             if (getPoint) {
               setPoint(getPoint);
             }
-            sendDataScan(usrId, point, token);
-            setLabelScan("สแกนอีกครั้ง");
-            setScanning(false);
           }
+          sendDataScan(usrId, point, token);
+          setLabelScan("สแกนอีกครั้ง");
+          setScanning(false);
         })
         .catch((error) => {
           setError(error);

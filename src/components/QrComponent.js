@@ -12,7 +12,7 @@ const QrComponent = () => {
   const urlBase = "https://liff.line.me/2005387393-XvmK0M34/";
   let desUrl = `${urlBase}?time=${time}&point=${point}`;
 
-  let dataScan = `${time}|${point}`;
+  let dataScan = `token|${time}|point|${point}`;
 
   const getToekn = () => {
     const date = new Date();
@@ -32,7 +32,7 @@ const QrComponent = () => {
     getToekn();
     setPoint(e.target.value);
     console.log(e.target.value);
-    console.log(desUrl);
+    console.log(dataScan);
   };
   return (
     <>
