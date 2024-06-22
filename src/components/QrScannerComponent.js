@@ -15,11 +15,15 @@ const QrScannerComponent = ({ usrId }) => {
         .then((result) => {
           let getToken = result != null ? result.value.split("|")[0] : null;
           let getPoint = result != null ? result.value.split("|")[1] : null;
-          if (getToken) {
-            setToken(getToken);
-          }
-          if (getPoint) {
-            setPoint(getPoint);
+          if(!getToken || !getPoint){
+            setError("QR Code ไม่ถูกต้อง");
+          }else{
+            if (getToken) {
+              setToken(getToken);
+            }
+            if (getPoint) {
+              setPoint(getPoint);
+            }
           }
           sendDataScan(usrId, point, token);
           setLabelScan("สแกนอีกครั้ง");
