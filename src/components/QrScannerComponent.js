@@ -24,10 +24,10 @@ const QrScannerComponent = ({ usrId }) => {
             if (getPoint) {
               setPoint(getPoint);
             }
+            sendDataScan(usrId, point, token);
+            setLabelScan("สแกนอีกครั้ง");
+            setScanning(false);
           }
-          sendDataScan(usrId, point, token);
-          setLabelScan("สแกนอีกครั้ง");
-          setScanning(false);
         })
         .catch((error) => {
           setError(error);
