@@ -8,6 +8,7 @@ const QrScannerComponent = ({ usrId }) => {
   const [error, setError] = useState(null);
   const [labelScan, setLabelScan] = useState("เริ่มสแกน");
 
+  let pp;
   useEffect(() => {
     if (scanning) {
       liff
@@ -23,6 +24,7 @@ const QrScannerComponent = ({ usrId }) => {
               setToken(getToken);
             }
             if (getPoint) {
+              pp = point;
               setPoint(getPoint);
             }
           }
@@ -54,8 +56,8 @@ const QrScannerComponent = ({ usrId }) => {
         {scanning && <span>กำลังสแกน...</span>}
       </p>
 
-      <p>{point && <span>ครั้งนี้คุณได้แต้ม: {point} แต้ม</span>}</p>
-      <p>{error && <span>เกิดข้อผิดพลาดในการสแกน: {error.message}</span>}</p>
+      <p>{point && <span>ครั้งนี้คุณได้แต้ม: {point} {pp} แต้ม</span>}</p>
+      <p>{error && <span>{error}</span>}</p>
     </div>
   );
 };
@@ -64,17 +66,17 @@ const sendDataScan = async (userId, point, token) => {
   try {
     let bodyContent = JSON.stringify({
       "userId" : userId,
-      "point" : point,
+      "point" : parseInt(point),
       "token" : token
     });
-    const response = await fetch("https://lineapi.vercel.app/sendResultScan", {
+    const response = await fetch("https://3e77-2001-44c8-4285-5b4b-155-52ae-6073-abec.ngrok-free.app/sendResultScan", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: bodyContent,
     });
-
+    console.log(bodyContent);
     if (!response.ok) {
       throw new Error("Failed to send notification");
     }
