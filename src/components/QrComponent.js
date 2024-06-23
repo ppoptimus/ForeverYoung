@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from "react";
 import QRCode from "react-qr-code";
+import CryptoJS from "crypto-js";
 
 const QrComponent = () => {
   const [point, setPoint] = useState("1");
-  const [time, setTime] = useState(null);
+  const [token, setToken] = useState(null);
 
   useEffect(() => {
+    setPoint("1");
     getToekn();
   }, [])
-  
-  const urlBase = "https://liff.line.me/2005387393-XvmK0M34/";
-  let desUrl = `${urlBase}?time=${time}&point=${point}`;
-
-  let dataScan = `token|${time}|point|${point}`;
 
   const getToekn = () => {
     const date = new Date();
@@ -25,15 +22,18 @@ const QrComponent = () => {
     const minliSecond = String(date.getMilliseconds()).padStart(2, "0");
 
     const formattedDateTime = `${year}${month}${day}${hour}${minute}${second}${minliSecond}`;
-    setTime(formattedDateTime);
+    const password = 'forever_young';
+    const ciphertext = CryptoJS.AES.encrypt(formattedDateTime, password);
+    console.log(ciphertext.toString());
+
+    setToken(ciphertext);
   };
 
   const selectPoint = (e) => {
     getToekn();
     setPoint(e.target.value);
-    console.log(e.target.value);
-    console.log(dataScan);
   };
+
   return (
     <>
       <form className="max-w-sm mx-auto flex justify-center text-center m-2">
@@ -70,7 +70,7 @@ const QrComponent = () => {
         <QRCode
           size={500}
           style={{ height: "300", maxWidth: "100%", width: "100%" }}
-          value={dataScan}
+          value={`token|${token}|point|${point}`}
           viewBox={`0 0 500 500`}
         />
       </div>

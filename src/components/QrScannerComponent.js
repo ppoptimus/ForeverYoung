@@ -46,7 +46,7 @@ const QrScannerComponent = ({ usrId }) => {
       <p>
         {!scanning && (
           <button
-            className="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+            className="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-extrabold rounded-full text-4xl px-6 py-4 text-center mt-6 me-4 mb-2"
             onClick={startScan}>
             {labelScan}
           </button>
@@ -54,8 +54,7 @@ const QrScannerComponent = ({ usrId }) => {
         {scanning && <span>กำลังสแกน...</span>}
       </p>
 
-      <p>{point && <span>ครั้งนี้คุณได้แต้ม: {point} แต้ม</span>}</p>
-      <p>{token && <span>Token: {token}</span>}</p>
+      <p>{point && <h2>ครั้งนี้คุณได้แต้ม: {point} แต้ม</h2>}</p>
       <p>{error && <span>{error}</span>}</p>
     </div>
   );
