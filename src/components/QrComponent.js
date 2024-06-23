@@ -8,10 +8,10 @@ const QrComponent = () => {
 
   useEffect(() => {
     setPoint("1");
-    getToekn();
+    getToekn(point);
   }, [])
 
-  const getToekn = () => {
+  const getToekn = (point) => {
     const date = new Date();
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -22,6 +22,7 @@ const QrComponent = () => {
     const minliSecond = String(date.getMilliseconds()).padStart(2, "0");
     const formattedDateTime = `${year}${month}${day}${hour}${minute}${second}${minliSecond}`;
     let text = `token|${formattedDateTime}|point|${point}`
+    console.log("getToekn text = " + text);
     genQr(text);
   };
   
@@ -33,12 +34,13 @@ const QrComponent = () => {
 
     const bytes = CryptoJS.AES.decrypt(ciphertext.toString(), password);
     const plaintext = bytes.toString(CryptoJS.enc.Utf8);
-    console.log(plaintext);
+    console.log("genQr plaintext = " + plaintext);
   }
 
   const selectPoint = (e) => {
-    getToekn();
     setPoint(e.target.value);
+    getToekn(e.target.value);
+    console.log("select point = " + e.target.value);
   };
 
   return (
