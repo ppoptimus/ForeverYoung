@@ -4,7 +4,7 @@ import CryptoJS from "crypto-js";
 
 const QrComponent = () => {
   const [point, setPoint] = useState("1");
-  const [token, setToken] = useState(null);
+  const [qrcode, setQrcode] = useState("");
 
   useEffect(() => {
     setPoint("1");
@@ -20,14 +20,21 @@ const QrComponent = () => {
     const minute = String(date.getMinutes()).padStart(2, "0");
     const second = String(date.getSeconds()).padStart(2, "0");
     const minliSecond = String(date.getMilliseconds()).padStart(2, "0");
-
     const formattedDateTime = `${year}${month}${day}${hour}${minute}${second}${minliSecond}`;
-    const password = 'forever_young';
-    const ciphertext = CryptoJS.AES.encrypt(formattedDateTime, password);
-    console.log(ciphertext.toString());
-
-    setToken(ciphertext);
+    let text = `token|${formattedDateTime}|point|${point}`
+    genQr(text);
   };
+  
+  const genQr = (text) => {
+    const password = 'forever_young';
+    const ciphertext = CryptoJS.AES.encrypt(text, password);
+    console.log(ciphertext.toString());
+    setQrcode(ciphertext.toString());
+
+    const bytes = CryptoJS.AES.decrypt(ciphertext.toString(), password);
+    const plaintext = bytes.toString(CryptoJS.enc.Utf8);
+    console.log(plaintext);
+  }
 
   const selectPoint = (e) => {
     getToekn();
@@ -70,7 +77,7 @@ const QrComponent = () => {
         <QRCode
           size={500}
           style={{ height: "300", maxWidth: "100%", width: "100%" }}
-          value={`token|${token}|point|${point}`}
+          value={qrcode}
           viewBox={`0 0 500 500`}
         />
       </div>

@@ -1,5 +1,6 @@
 import liff from "@line/liff";
 import React, { useEffect, useState } from "react";
+import CryptoJS from "crypto-js";
 
 const QrScannerComponent = ({ usrId }) => {
   const [scanning, setScanning] = useState(false);
@@ -13,12 +14,13 @@ const QrScannerComponent = ({ usrId }) => {
       liff
         .scanCodeV2()
         .then((result) => {
-          let codeArr = result.value.split("|");
-          let getToken = (codeArr[0] === "token") ? codeArr[1] : null;
-          let getPoint = (codeArr[2] === "point") ? codeArr[3] : null;
-          if(getToken == null || getPoint == null){
+          let plainText = deCryptCode(result.value);
+          let codeArr = plainText.split("|");
+          let getToken = codeArr[0] === "token" ? codeArr[1] : null;
+          let getPoint = codeArr[2] === "point" ? codeArr[3] : null;
+          if (getToken == null || getPoint == null) {
             setError("QR Code ไม่ถูกต้อง");
-          }else{
+          } else {
             if (getToken) {
               setToken(() => getToken);
             }
@@ -39,6 +41,13 @@ const QrScannerComponent = ({ usrId }) => {
 
   const startScan = () => {
     setScanning(true);
+  };
+
+  const deCryptCode = (qrcode) => {
+    const password = "forever_young";
+    const bytes = CryptoJS.AES.decrypt(qrcode.toString(), password);
+    const plaintext = bytes.toString(CryptoJS.enc.Utf8);
+    return plaintext;
   };
 
   return (
@@ -63,17 +72,20 @@ const QrScannerComponent = ({ usrId }) => {
 const sendDataScan = async (userId, point, token) => {
   try {
     let bodyContent = JSON.stringify({
-      "userId" : userId,
-      "point" : parseInt(point),
-      "token" : token
+      userId: userId,
+      point: parseInt(point),
+      token: token,
     });
-    const response = await fetch("https://3e77-2001-44c8-4285-5b4b-155-52ae-6073-abec.ngrok-free.app/sendResultScan", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: bodyContent,
-    });
+    const response = await fetch(
+      "https://3e77-2001-44c8-4285-5b4b-155-52ae-6073-abec.ngrok-free.app/sendResultScan",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: bodyContent,
+      }
+    );
     console.log(bodyContent);
     if (!response.ok) {
       throw new Error("Failed to send notification");
