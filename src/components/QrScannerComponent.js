@@ -8,7 +8,6 @@ const QrScannerComponent = ({ usrId }) => {
   const [error, setError] = useState(null);
   const [labelScan, setLabelScan] = useState("เริ่มสแกน");
 
-  let pp;
   useEffect(() => {
     if (scanning) {
       liff
@@ -21,11 +20,10 @@ const QrScannerComponent = ({ usrId }) => {
             setError("QR Code ไม่ถูกต้อง");
           }else{
             if (getToken) {
-              setToken(getToken);
+              setToken(() => getToken);
             }
             if (getPoint) {
-              pp = point;
-              setPoint(getPoint);
+              setPoint(() => getPoint);
             }
           }
           sendDataScan(usrId, point, token);
@@ -56,7 +54,8 @@ const QrScannerComponent = ({ usrId }) => {
         {scanning && <span>กำลังสแกน...</span>}
       </p>
 
-      <p>{point && <span>ครั้งนี้คุณได้แต้ม: {point} {pp} แต้ม</span>}</p>
+      <p>{point && <span>ครั้งนี้คุณได้แต้ม: {point} แต้ม</span>}</p>
+      <p>{token && <span>Token: {token}</span>}</p>
       <p>{error && <span>{error}</span>}</p>
     </div>
   );
