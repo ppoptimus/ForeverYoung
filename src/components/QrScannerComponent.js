@@ -77,7 +77,7 @@ const sendDataScan = async (userId, point, token) => {
       token: token,
     });
     const response = await fetch(
-      "https://3e77-2001-44c8-4285-5b4b-155-52ae-6073-abec.ngrok-free.app/sendResultScan",
+      "https://lineapi.vercel.app/sendResultScan",
       {
         method: "POST",
         headers: {
