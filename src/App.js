@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import QrComponent from "./components/QrComponent";
-import QrScannerComponent from "./components/QrScannerComponent";
+import ScannerComponent from "./components/ScannerComponent";
 
 function App() {
   const [profile, setProfile] = useState(null);
@@ -38,7 +38,7 @@ function App() {
         </div>
       );
     } else if (param === "scan") {
-      return <QrScannerComponent usrId={profile?.userId} />;
+      return <ScannerComponent usrId={profile?.userId} />;
     } else {
       return (
         <div>
