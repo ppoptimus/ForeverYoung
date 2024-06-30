@@ -3,8 +3,9 @@ import React, { useEffect, useState } from "react";
 import CryptoJS from "crypto-js";
 import { AddUserPoint } from "../transaction/AddUserPoint";
 import { getTotalPoints } from "../transaction/getTotalPoints";
+import getExistsToken from "../transaction/getExistsToken";
 
-const NewScan = ({ usrId }) => {
+const ScanQrcode = ({ usrId }) => {
   const [dataDecypt, setDataDecypt] = useState("");
   const [errorMsg, setErrorMsg] = useState(null);
   const [successMsg, setSuccessMsg] = useState(null);
@@ -13,9 +14,9 @@ const NewScan = ({ usrId }) => {
   useEffect(() => {
     if (dataDecypt) {
       saveData(dataDecypt);
-      getPoint();
     }
-  }, [dataDecypt]);
+    getPoint();
+  }, [dataDecypt, totalPoint]);
 
   const startScan = async () => {
     try {
@@ -44,19 +45,29 @@ const NewScan = ({ usrId }) => {
   };
 
   const saveData = async (data) => {
+    let checkExists = "";
     try {
       let codeArr = data.split("|");
       let getToken = codeArr[0] === "token" ? codeArr[1] : null;
       let getPoint = codeArr[2] === "point" ? codeArr[3] : null;
-      const result = await AddUserPoint(usrId, getPoint, getToken);
-      if (result.success) {
-        setSuccessMsg("Save success");
+      checkExists = await getExistsToken(usrId, getToken);
+      if(checkExists === "success"){
+        const result = await AddUserPoint(usrId, getPoint, getToken);
+        if (result.success) {
+          setSuccessMsg("Save success");
+        } else {
+          setErrorMsg(result.message);
+        }
+      } else if(checkExists === "duplicate") {
+        setErrorMsg("Duplicate Token!");
       } else {
-        setErrorMsg(result.message);
+        setErrorMsg(checkExists);
       }
     } catch (err) {
       setErrorMsg(err);
-    }
+    } finally {
+      getPoint();
+  }
   };
 
   const getPoint = async () => {
@@ -84,4 +95,4 @@ const NewScan = ({ usrId }) => {
   );
 };
 
-export default NewScan;
+export default ScanQrcode;
