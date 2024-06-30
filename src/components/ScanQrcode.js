@@ -5,7 +5,7 @@ import { AddUserPoint } from "../transaction/AddUserPoint";
 import { getTotalPoints } from "../transaction/getTotalPoints";
 import getExistsToken from "../transaction/getExistsToken";
 
-const ScanQrcode = ({ usrId }) => {
+const ScanQrcode = ({ usrId, pictureUrl, displayName }) => {
   const [dataDecypt, setDataDecypt] = useState("");
   const [errorMsg, setErrorMsg] = useState(null);
   const [successMsg, setSuccessMsg] = useState(null);
@@ -16,19 +16,23 @@ const ScanQrcode = ({ usrId }) => {
       saveData(dataDecypt);
     }
     getPoint();
-  }, [dataDecypt, totalPoint]);
+  }, [dataDecypt, totalPoint, errorMsg]);
 
   const startScan = async () => {
     try {
       const result = await liff.scanCodeV2();
       if (result) {
         const decryptedData = deCryptCode(result.value);
-        setDataDecypt(decryptedData);
+        if (decryptedData === "") {
+          setErrorMsg("QrCode ไม่ถูกต้อง!");
+        } else {
+          setDataDecypt(decryptedData);
+        }
       }
     } catch (error) {
-      console.error(error);
+      setErrorMsg(error);
     } finally {
-        getPoint();
+      getPoint();
     }
   };
 
@@ -39,8 +43,7 @@ const ScanQrcode = ({ usrId }) => {
       const plaintext = bytes.toString(CryptoJS.enc.Utf8);
       return plaintext;
     } catch (error) {
-      console.error("การถอดรหัสล้มเหลว:", error);
-      return null;
+      return "error";
     }
   };
 
@@ -51,14 +54,14 @@ const ScanQrcode = ({ usrId }) => {
       let getToken = codeArr[0] === "token" ? codeArr[1] : null;
       let getPoint = codeArr[2] === "point" ? codeArr[3] : null;
       checkExists = await getExistsToken(usrId, getToken);
-      if(checkExists === "success"){
+      if (checkExists === "success") {
         const result = await AddUserPoint(usrId, getPoint, getToken);
         if (result.success) {
           setSuccessMsg("Save success");
         } else {
           setErrorMsg(result.message);
         }
-      } else if(checkExists === "duplicate") {
+      } else if (checkExists === "duplicate") {
         setErrorMsg("Duplicate Token!");
       } else {
         setErrorMsg(checkExists);
@@ -67,31 +70,42 @@ const ScanQrcode = ({ usrId }) => {
       setErrorMsg(err);
     } finally {
       getPoint();
-  }
+    }
   };
 
   const getPoint = async () => {
     try {
-        const point = await getTotalPoints(usrId);
-        setTotalPoint(point);
+      const point = await getTotalPoints(usrId);
+      setTotalPoint(point);
     } catch (err) {
-        setErrorMsg(err);
+      setErrorMsg(err);
     }
-  }
+  };
 
   return (
-    <div>
-      <button
-        className="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-extrabold rounded-full text-4xl px-6 py-4 text-center mt-6 me-4 mb-2"
-        onClick={startScan}
-      >
-        Scan
-      </button>
-      {dataDecypt && <p>{dataDecypt}</p>}
-      {successMsg && <p>{successMsg}</p>}
-      {errorMsg && <p>{errorMsg}</p>}
-      {totalPoint && <p>{totalPoint}</p>}
-    </div>
+    <>
+      <div className="container-fluid">
+        <div class="row justify-content-start align-items-center">
+          <div class="col-3">
+            <img className="rounded-circle img-thumbnail" src={pictureUrl} alt="" />
+          </div>
+          <div class="col-6">
+            <div className="text-xl-start fs-5 fw-bold">{displayName}</div>
+            <div className="text-lg-start">แต้มคงเหลือ : {totalPoint ? <span>{totalPoint}</span> : 0}</div>
+          </div>
+        </div>
+      </div>
+
+      <div className="position-absolute bottom-0 start-50 translate-middle-x text-center">
+        <div className="m-2">
+          {successMsg && <b>{successMsg}</b>}
+          {errorMsg && <b className="text-danger">{errorMsg}</b>}
+        </div>
+        <button className="btn btn-dark rounded-pill fs-3 px-4 py-2" onClick={startScan}>
+          <i className="bi bi-qr-code-scan"></i> Scan
+        </button>
+      </div>
+    </>
   );
 };
 

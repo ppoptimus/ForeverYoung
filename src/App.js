@@ -40,7 +40,7 @@ function App() {
   if (param === "genqr") {
     return <QrComponent usrId={profile.userId} />;
   } else if (param === "scan") {
-    return <NewScan usrId={profile.userId} />;
+    return <NewScan usrId={profile.userId} pictureUrl={profile.pictureUrl} displayName={profile.displayName} />;
   } else {
     return (
       <div>
