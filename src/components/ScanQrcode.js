@@ -6,7 +6,7 @@ import { getTotalPoints } from "../transaction/getTotalPoints";
 import getExistsToken from "../transaction/getExistsToken";
 
 const ScanQrcode = ({ usrId, pictureUrl, displayName }) => {
-  const [dataDecypt, setDataDecypt] = useState("");
+  const [dataDecypt, setDataDecypt] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [successMsg, setSuccessMsg] = useState(null);
   const [totalPoint, setTotalPoint] = useState(null);
@@ -23,11 +23,15 @@ const ScanQrcode = ({ usrId, pictureUrl, displayName }) => {
       const result = await liff.scanCodeV2();
       if (result) {
         const decryptedData = deCryptCode(result.value);
-        if (decryptedData === "") {
+        if (decryptedData === "error") {
+          setDataDecypt(null);
           setErrorMsg("QrCode ไม่ถูกต้อง!");
         } else {
           setDataDecypt(decryptedData);
         }
+      } else {
+        setDataDecypt(null);
+        return;
       }
     } catch (error) {
       setErrorMsg(error);
@@ -84,29 +88,80 @@ const ScanQrcode = ({ usrId, pictureUrl, displayName }) => {
 
   return (
     <>
-      <div className="container-fluid">
-        <div class="row justify-content-start align-items-center">
-          <div class="col-3">
+      <div className="container-fluid mb-5">
+        <div className="row justify-content-start align-items-center">
+          <div className="col-3">
             <img className="rounded-circle img-thumbnail" src={pictureUrl} alt="" />
           </div>
-          <div class="col-6">
+          <div className="col-6">
             <div className="text-xl-start fs-5 fw-bold">{displayName}</div>
             <div className="text-lg-start">แต้มคงเหลือ : {totalPoint ? <span>{totalPoint}</span> : 0}</div>
           </div>
         </div>
+        <div className="mb-5 pb-5">
+          <Detail />
+        </div>
       </div>
 
-      <div className="position-absolute bottom-0 start-50 translate-middle-x text-center">
-        <div className="m-2">
-          {successMsg && <b>{successMsg}</b>}
-          {errorMsg && <b className="text-danger">{errorMsg}</b>}
-        </div>
-        <button className="btn btn-dark rounded-pill fs-3 px-4 py-2" onClick={startScan}>
-          <i className="bi bi-qr-code-scan"></i> Scan
+      <div className="position-fixed bottom-0 start-50 translate-middle-x d-flex justify-content-center w-100 mb-5">
+        <button className="button-14 m-2" type="button">
+          <div className="button-14-top text">
+            <i className="fs-1 bi bi-joystick"></i> <span className="ms-1">Play Games</span>
+          </div>
+          <div className="button-14-bottom"></div>
+          <div className="button-14-base"></div>
+        </button>
+        <button className="button-27 m-2" type="button" onClick={startScan}>
+          <span className="d-flex align-items-center">
+            <i className="fs-1 bi bi-qr-code-scan"></i> <span className="ms-1">Scan</span>
+          </span>
         </button>
       </div>
     </>
   );
 };
 
+const Detail = () => {
+  return (
+    <div className="container mt-3 mb-5">
+      <div className="row text-center">
+        <div className="col-md-12">
+          <h1 className="display-4 fw-bold text-primary">สะสมแต้ม เล่นเกม รับส่วนลด!</h1>
+          <p className="lead text-muted">สนุกกับกิจกรรมสุดพิเศษ สะสมแต้ม เล่นเกม ลุ้นรับรางวัลมากมาย!</p>
+        </div>
+      </div>
+
+      <div className="row mt-3 mb-5">
+        <div className="col-md-6 mb-4">
+          <div className="card h-100 shadow-sm" style={{ backgroundColor: '#ffebee' }}>
+            <div className="card-body">
+              <h2 className="card-title section-title text-danger">
+                <i className="bi bi-trophy me-2"></i>
+                สะสมแต้มง่ายๆ
+              </h2>
+              <ul className="list-group list-group-flush">
+                <li className="list-group-item" style={{ backgroundColor: '#ffcdd2' }}>ซื้อสินค้าครบ 100 บาท รับฟรี 1 แต้ม!</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div className="col-md-6 mb-4">
+          <div className="card h-100 shadow-sm" style={{ backgroundColor: '#e3f2fd' }}>
+            <div className="card-body">
+              <h2 className="card-title section-title text-primary">
+                <i className="bi bi-controller me-2"></i>
+                เอาแต้มไปเล่นเกมส์ลุ้นรางวัล
+              </h2>
+              <ul className="list-group list-group-flush">
+                <li className="list-group-item" style={{ backgroundColor: '#bbdefb' }}>แต่ละเกมอาจใช้แต้มไม่เท่ากัน เช็คแต้มที่ใช้ได้ก่อนเล่น</li>
+                <li className="list-group-item" style={{ backgroundColor: '#bbdefb' }}>เล่นเกมส์สนุกๆ ลุ้นรับรางวัลมากมาย เช่น คูปองส่วนลดและรางวัลอื่นๆ อีกมากมาย!</li>
+                <li className="list-group-item" style={{ backgroundColor: '#bbdefb' }}>ยิ่งเล่น ยิ่งมีสิทธิ์ลุ้นรางวัลมากขึ้น!</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 export default ScanQrcode;
