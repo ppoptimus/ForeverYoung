@@ -4,6 +4,7 @@ import CryptoJS from "crypto-js";
 import { AddUserPoint } from "../transaction/AddUserPoint";
 import { getTotalPoints } from "../transaction/getTotalPoints";
 import getExistsToken from "../transaction/getExistsToken";
+import '../ScanQrcode.css'
 
 const ScanQrcode = ({ usrId, pictureUrl, displayName }) => {
   const [dataDecypt, setDataDecypt] = useState(null);
@@ -124,38 +125,36 @@ const ScanQrcode = ({ usrId, pictureUrl, displayName }) => {
 const Detail = () => {
   return (
     <div className="container mt-3 mb-5">
-      <div className="row text-center">
-        <div className="col-md-12">
-          <h1 className="display-4 fw-bold text-primary">สะสมแต้ม เล่นเกม รับส่วนลด!</h1>
-          <p className="lead text-muted">สนุกกับกิจกรรมสุดพิเศษ สะสมแต้ม เล่นเกม ลุ้นรับรางวัลมากมาย!</p>
-        </div>
+      <div className="header">
+        <h1 className="display-4 fw-bold text-primary">สะสมแต้ม เล่นเกม รับส่วนลด!</h1>
+        <p className="lead text-muted">สนุกกับกิจกรรมสุดพิเศษ สะสมแต้ม เล่นเกม ลุ้นรับรางวัลมากมาย!</p>
       </div>
 
       <div className="row mt-3 mb-5">
         <div className="col-md-6 mb-4">
-          <div className="card h-100 shadow-sm" style={{ backgroundColor: '#ffebee' }}>
+          <div className="card h-100 shadow-sm">
             <div className="card-body">
               <h2 className="card-title section-title text-danger">
-                <i className="bi bi-trophy me-2"></i>
+                <i className="bi bi-trophy icon"></i>
                 สะสมแต้มง่ายๆ
               </h2>
               <ul className="list-group list-group-flush">
-                <li className="list-group-item" style={{ backgroundColor: '#ffcdd2' }}>ซื้อสินค้าครบ 100 บาท รับฟรี 1 แต้ม!</li>
+                <li className="list-group-item">ซื้อสินค้าครบ 100 บาท รับฟรี 1 แต้ม!</li>
               </ul>
             </div>
           </div>
         </div>
         <div className="col-md-6 mb-4">
-          <div className="card h-100 shadow-sm" style={{ backgroundColor: '#e3f2fd' }}>
+          <div className="card h-100 shadow-sm">
             <div className="card-body">
               <h2 className="card-title section-title text-primary">
-                <i className="bi bi-controller me-2"></i>
+                <i className="bi bi-controller icon"></i>
                 เอาแต้มไปเล่นเกมส์ลุ้นรางวัล
               </h2>
               <ul className="list-group list-group-flush">
-                <li className="list-group-item" style={{ backgroundColor: '#bbdefb' }}>แต่ละเกมอาจใช้แต้มไม่เท่ากัน เช็คแต้มที่ใช้ได้ก่อนเล่น</li>
-                <li className="list-group-item" style={{ backgroundColor: '#bbdefb' }}>เล่นเกมส์สนุกๆ ลุ้นรับรางวัลมากมาย เช่น คูปองส่วนลดและรางวัลอื่นๆ อีกมากมาย!</li>
-                <li className="list-group-item" style={{ backgroundColor: '#bbdefb' }}>ยิ่งเล่น ยิ่งมีสิทธิ์ลุ้นรางวัลมากขึ้น!</li>
+                <li className="list-group-item">แต่ละเกมอาจใช้แต้มไม่เท่ากัน เช็คแต้มที่ใช้ได้ก่อนเล่น</li>
+                <li className="list-group-item">เล่นเกมส์สนุกๆ ลุ้นรับรางวัลมากมาย เช่น คูปองส่วนลดและรางวัลอื่นๆ อีกมากมาย!</li>
+                <li className="list-group-item">ยิ่งเล่น ยิ่งมีสิทธิ์ลุ้นรางวัลมากขึ้น!</li>
               </ul>
             </div>
           </div>
