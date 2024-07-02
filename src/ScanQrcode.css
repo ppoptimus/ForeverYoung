@@ -1,60 +1,59 @@
 body {
-    background-color: #121212;
-    color: #f8f9fa;
-    font-family: 'Roboto', sans-serif;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .container {
-    max-width: 1200px;
-    margin: auto;
-    padding: 20px;
-  }
-  
-  .header {
-    text-align: center;
-    margin-bottom: 40px;
-  }
-  
-  .header h1 {
-    color: #ff9800;
-    font-size: 3em;
-    text-shadow: 2px 2px 5px #000;
-  }
-  
-  .header p {
-    font-size: 1.2em;
-    color: #bbb;
-  }
-  
-  .card {
-    background-color: #1e1e1e;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    margin-bottom: 20px;
-    overflow: hidden;
-  }
-  
-  .card-body {
-    padding: 20px;
-  }
-  
-  .card-title {
-    font-size: 1.5em;
-    color: #ff9800;
-    margin-bottom: 20px;
-  }
-  
-  .list-group-item {
-    background-color: #333;
-    border: none;
-    padding: 10px 15px;
-    color: #f8f9fa;
-  }
-  
-  .icon {
-    font-size: 1.5em;
-    margin-right: 10px;
-  }
-  
+  background-color: #f0f0f0; /* สีพื้นหลังแบบครีมอ่อน */
+  color: #333; /* สีตัวอักษรหลัก */
+  font-family: 'Mitr', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.header h1 {
+  color: #ff7f50; /* สีโทนส้มอ่อน */
+  font-size: 3em;
+  text-shadow: 2px 2px 5px #aaa;
+}
+
+.header p {
+  font-size: 1.2em;
+  color: #777;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.card-title {
+  font-size: 1.5em;
+  color: #ff7f50; /* สีโทนส้มอ่อน */
+  margin-bottom: 20px;
+}
+
+.list-group-item {
+  background-color: #f9f9f9;
+  border: none;
+  padding: 10px 15px;
+  color: #333;
+}
+
+.icon {
+  font-size: 1.5em;
+  margin-right: 10px;
+}
