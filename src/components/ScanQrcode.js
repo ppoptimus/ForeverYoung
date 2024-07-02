@@ -126,15 +126,15 @@ const Detail = () => {
   return (
     <div className="container mt-3 mb-5">
       <div className="header">
-        <h1 className="display-4 fw-bold text-primary">สะสมแต้ม เล่นเกม รับส่วนลด!</h1>
-        <p className="lead text-muted">สนุกกับกิจกรรมสุดพิเศษ สะสมแต้ม เล่นเกม ลุ้นรับรางวัลมากมาย!</p>
+        <h1 className="display-4 fw-bold">สะสมแต้ม เล่นเกม รับส่วนลด!</h1>
+        <p className="lead">สนุกกับกิจกรรมสุดพิเศษ สะสมแต้ม เล่นเกม ลุ้นรับรางวัลมากมาย!</p>
       </div>
 
       <div className="row mt-3 mb-5">
         <div className="col-md-6 mb-4">
           <div className="card h-100 shadow-sm">
             <div className="card-body">
-              <h2 className="card-title section-title text-danger">
+              <h2 className="card-title section-title">
                 <i className="bi bi-trophy icon"></i>
                 สะสมแต้มง่ายๆ
               </h2>
@@ -147,7 +147,7 @@ const Detail = () => {
         <div className="col-md-6 mb-4">
           <div className="card h-100 shadow-sm">
             <div className="card-body">
-              <h2 className="card-title section-title text-primary">
+              <h2 className="card-title section-title">
                 <i className="bi bi-controller icon"></i>
                 เอาแต้มไปเล่นเกมส์ลุ้นรางวัล
               </h2>
