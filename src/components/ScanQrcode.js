@@ -89,7 +89,7 @@ const ScanQrcode = ({ usrId, pictureUrl, displayName }) => {
 
   return (
     <>
-      <div className="container-fluid mb-1 position-relative">
+      <div className="container">
         <div className="row justify-content-start align-items-center">
           <div className="col-3" style={{ zIndex: 20 }}>
             <img className="rounded-circle img-thumbnail" src={pictureUrl} alt="" />
@@ -97,7 +97,7 @@ const ScanQrcode = ({ usrId, pictureUrl, displayName }) => {
           <div className="col-9" style={{ zIndex: 20 }}>
             <div className="text-xl-start fs-5 fw-bold text-light">{displayName}</div>
             <div className="text-lg-start text-white">
-              แต้มคงเหลือ : {totalPoint ? <span className="text-xl-start fw-bold shadow">{totalPoint}</span> : 0}
+              แต้มคงเหลือ : {totalPoint ? <span className="text-xxl-start fw-bold">{totalPoint}</span> : 0}
             </div>
           </div>
         </div>
@@ -113,9 +113,9 @@ const ScanQrcode = ({ usrId, pictureUrl, displayName }) => {
       </div>
 
       <div className="position-fixed bottom-0 start-50 translate-middle-x d-flex justify-content-center w-100 mb-5" style={{ zIndex: 11 }}>
-        <button className="btn btn-dark rounded-pill m-2 px-4 py-2" type="button" onClick={startScan}>
+        <button className="btn btn-dark rounded-pill m-2 px-4 py-2 shadow-lg" type="button" onClick={startScan}>
           <span className="d-flex align-items-center">
-            <i className="fs-1 bi bi-qr-code-scan"></i> <span className="ms-1">Scan</span>
+          <span className="me-2 fs-4">Scan</span> <i className="fs-1 bi bi-qr-code-scan"></i>
           </span>
         </button>
       </div>
@@ -125,7 +125,7 @@ const ScanQrcode = ({ usrId, pictureUrl, displayName }) => {
 
 const Detail = () => {
   return (
-    <div className="container mt-3 mb-5 position-relative" style={{ zIndex: 1 }}>
+    <div className="container mb-5" style={{ zIndex: 1 }}>
       <div className="svg-background">
         <svg preserveAspectRatio="xMidYMid slice" viewBox="10 10 80 80">
           <path
@@ -159,9 +159,9 @@ const Detail = () => {
         <p className="lead">สนุกกับกิจกรรมสุดพิเศษ สะสมแต้ม เล่นเกม ลุ้นรับคูปองมากมาย!</p>
       </div>
 
-      <div className="row mt-3 mb-5 position-relative" style={{ zIndex: 2 }}>
+      <div className="row mt-3 mb-5">
         <div className="col-md-6 mb-4">
-        <div className="card card-1 h-100 shadow-sm">
+        <div className="card card-3 h-100 shadow-sm" style={{ zIndex: 2 }}>
             <div className="card-body">
               <h2 className="card-title section-title">
                 <i className="bi bi-trophy icon"></i>
@@ -169,12 +169,13 @@ const Detail = () => {
               </h2>
               <ul className="list-group list-group-flush">
                 <li className="list-group-item">ซื้อครบ 100 บาท รับ 1 แต้ม!</li>
+                <li className="list-group-item">แจ้งพนักงานหน้าร้าน ขอสแกนรับแต้ม</li>
               </ul>
             </div>
           </div>
         </div>
         <div className="col-md-6 mb-4">
-          <div className="card card-2 h-100 shadow-sm">
+          <div className="card card-4 h-100 shadow-sm" style={{ zIndex: 2 }}>
             <div className="card-body">
               <h2 className="card-title section-title">
                 <i className="bi bi-controller icon"></i>
